@@ -1,0 +1,117 @@
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #f4f4f4;
+}
+
+/* Navigation Bar */
+.navbar {
+  background-color: #1a73e8;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  text-align: center; /* Centers the navigation links */
+}
+
+.navbar ul {
+  list-style: none;
+  display: inline-flex; /* Keeps the navbar centered */
+  justify-content: center; /* Ensures items are evenly spaced */
+  margin: 0;
+  padding: 0;
+}
+
+.navbar li {
+  margin: 0 1rem;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  font-family: Arial, sans-serif; /* Matches the font from live.css */
+}
+
+.navbar a.active {
+  text-decoration: underline;
+  color: yellow;
+}
+
+.navbar a:hover {
+  text-decoration: underline;
+}
+
+/* Center heading */
+.center {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Table Styling */
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+  padding: 12px;
+  font-size: 16px;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+  font-size: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+h2, h3 {
+  text-align: center;
+  margin-top: 30px;
+  color: #333;
+}
+/* Default (Blue Theme) */
+.blue-theme {
+  --primary-color: #007bff;
+  --secondary-color: #0056b3;
+  --accent-color: #cce5ff;
+}
+
+/* Green Theme */
+.green-theme {
+  --primary-color: #28a745;
+  --secondary-color: #1e7e34;
+  --accent-color: #c3e6cb;
+}
+
+
+body {
+  background-color: var(--accent-color);
+  color: var(--secondary-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--secondary-color);
+}

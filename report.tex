@@ -1,0 +1,330 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{float} 
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    urlcolor=blue,
+}
+
+\title{\textbf{Howzatt! Cricket Scorekeeper}\\\large Final Project Report(CS104)}
+\author{Hindocha Avadh Dharmeshbhai \\ Roll Number: 24B1005 \\ IIT Bombay, CSE Department}
+\date{29th April 2025}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\newpage
+
+\section{Introduction}
+Cricket, one of the most widely followed sports across the world, demands precise and dynamic scorekeeping to reflect the evolving state of a match. This project introduces \textbf{Howzatt! Cricket Scorekeeper} — a fully browser-based application designed to facilitate real-time ball-by-ball scoring for two-innings matches. The system not only captures runs, wickets, and overs but also updates individual player statistics and match summaries on the fly.
+
+Built entirely using HTML, CSS, and JavaScript, this project emphasizes front-end development techniques to deliver a seamless and responsive scoring interface without any reliance on server-side or backend infrastructure. With an intuitive layout and structured game logic, the application mimics official scoring tables and commentary flow, making it both functional and user-friendly for casual games or practice sessions.
+
+
+
+\section{Project Overview}
+\subsection{Motivation}
+Manual cricket scoring during casual or school-level matches is often prone to errors, delays, and lack of standard presentation. These issues affect match flow and can lead to disputes or loss of key statistics like player performance or partnerships.
+
+\textbf{Howzatt! Cricket Scorekeeper} was developed to offer a simple, offline, digital alternative using just HTML, CSS, and JavaScript. It maintains live match data across multiple pages using \texttt{sessionStorage}, enabling features like real-time commentary, strike rate/run rate calculations, and automated innings transitions.
+
+The focus on a frontend-only approach ensures wide accessibility and strengthens skills in DOM manipulation, session handling, and event-driven design — making it both educational and practical.
+\subsection{Technology Stack}
+\begin{itemize}
+    \item HTML for page structure
+    \item CSS for styling
+    \item JavaScript for logic and interactivity
+    \item Session Storage for client-side data persistence
+\end{itemize}
+
+\subsection{Directory Structure}
+\begin{verbatim}
+├── score.js setup.html setup.css live.html live.css 
+├── scorecard.html scorecard.css summary.html summary.css
+\end{verbatim}
+
+\section{Key Functionalities}
+
+\subsection{Setup Page}
+
+The setup page initializes the match configuration and prepares the web app for live scoring. It collects key inputs from the user and stores them for use throughout the match.
+
+\begin{itemize}
+    \item Takes team names, toss winner, toss decision, and number of overs.
+    \item Validates that all required fields are filled and overs is a positive integer.
+    \item Determines which team bats first and sets up match logic accordingly.
+    \item Stores the following in \texttt{sessionStorage}:
+    \begin{itemize}
+        \item Team names, innings number, batting/bowling order.
+        \item Initial stats: runs, wickets, overs, extras.
+        \item Empty arrays for batting and bowling lineups for both innings.
+        \item Commentary templates for dot balls, runs (1 to 6), extras, and dismissals (bowled, caught, LBW).
+        \item Boolean flags such as \texttt{initialised}, \texttt{noBall}, \texttt{batterForm}, \texttt{bowlerForm}.
+    \end{itemize}
+    \item All data is prepared for seamless handover to \texttt{live.html} using front-end-only logic (no backend or database).
+    \item Commentary is randomized to make ball-by-ball updates dynamic and engaging.
+\end{itemize}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/setup_screenshot.png}
+    \caption{Setup Page Interface: Configuring the match before it begins.}
+    \label{fig:setup}
+\end{figure}
+
+
+\subsection{Live Page}
+
+The \texttt{live.html} page is the central match engine where all scoring actions take place. It dynamically updates both the user interface and the stored match state using JavaScript, with full ball-by-ball interactivity.
+
+\begin{itemize}
+    \item Contains buttons to log ball outcomes: 0–6 runs, wide, no-ball, and wicket.
+    \item Captures and updates batter statistics per delivery: runs scored, balls faced, boundaries hit, and strike rate.
+    \item Updates bowler statistics: overs bowled, runs conceded, wickets taken, maiden overs, and economy rate.
+    \item Implements automatic strike changes on odd runs and end-of-over logic.
+    \item Tracks innings progression: switches to second innings when all wickets fall or max overs are bowled.
+    \item Automatically detects and displays match results:
+    \begin{itemize}
+        \item By runs (if defending team wins).
+        \item By wickets and balls left (if chasing team wins).
+        \item Match tied if scores are level.
+    \end{itemize}
+    \item Prompts for:
+    \begin{itemize}
+        \item Initial players at start of each innings: Strike Batter, Non-Strike Batter, and Bowler.
+        \item New batter when a wicket falls.
+        \item New bowler at the end of each over.
+    \end{itemize}
+    \item Maintains dynamic ball-by-ball commentary, randomized using pre-defined text arrays (dot balls, runs, boundaries, extras, and dismissals).
+    \item Uses \texttt{sessionStorage} extensively to retain game state and allow seamless transition between pages.
+    \item Displays real-time tables of active batter and bowler stats using HTML table updates.
+    \item Shows current and required run rates dynamically as match progresses.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/live_screenshot.png}
+    \caption{Live Scoring Interface: Ball-by-ball scoring and statistics update engine.}
+    \label{fig:live}
+\end{figure}
+
+\subsection{Scorecard Page}
+
+The \texttt{scorecard.html} page is designed to present a comprehensive overview of individual and team performances after (or during) the match. It fetches all player data from \texttt{sessionStorage} and renders it into structured tables representing both innings.
+
+\begin{itemize}
+    \item The page is divided into four main sections:
+    \begin{itemize}
+        \item Innings 1 Batting Scorecard
+        \item Innings 1 Bowling Summary
+        \item Innings 2 Batting Scorecard
+        \item Innings 2 Bowling Summary
+    \end{itemize}
+    \item Batting scorecards list:
+    \begin{itemize}
+        \item Player name, dismissal type (e.g., \texttt{b BowlerName}, \texttt{c Fielder b Bowler}), runs scored, balls faced, number of 4s/6s hit, and strike rate.
+        \item Highlights the dismissal string stored in the player’s 11th stat field (e.g., \texttt{playerName + "stats"[10]}).
+    \end{itemize}
+    \item Bowling summaries include:
+    \begin{itemize}
+        \item Bowler name, overs bowled, maiden overs, runs conceded, wickets taken, and economy rate.
+        \item Stats are calculated dynamically by tracking overs and total balls delivered.
+    \end{itemize}
+    \item Uses \texttt{getStats()} function to extract session-stored player statistics and populate HTML tables.
+    \item Dynamically updates tables using the JavaScript DOM without refreshing the page.
+    \item Responsive table layout improves readability across devices.
+    \item Allows access mid-match without disrupting scoring or live data.
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{figures/scorecard_screenshot.png}
+    \caption{Scorecard Page: Full statistical breakdown of both innings.}
+    \label{fig:scorecard}
+\end{figure}
+
+
+\subsection{Summary Page}
+The \texttt{summary.html} page displays the final match result once the second innings ends due to a win, loss, or tie.
+
+\begin{itemize} \item Fetches total runs, wickets, and overs from \texttt{sessionStorage}. \item Calculates result in three formats: win by runs, win by wickets (with balls left), or tie. \item Uses overs-to-balls logic to compute remaining deliveries. \item Includes a “Reset” button to clear session data and restart the match setup. \item The layout is responsive, with result text prominently centered for readability. \end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{figures/summary_screenshot.png}
+    \caption{Summary Page: Displays the final match outcome and resets the application state.}
+    \label{fig:summary}
+\end{figure}
+
+
+\section{Styling and UI Design}
+
+The application's user interface has been carefully crafted using CSS to ensure a visually appealing and consistent experience across all four major pages. Each page includes its own dedicated CSS file to isolate styles and improve maintainability.
+
+\begin{itemize}
+    \item \textbf{Modular CSS Files}: Every HTML page is linked with a specific stylesheet:
+    \begin{itemize}
+        \item \texttt{setup.html} $\rightarrow$ \texttt{setup.css}
+        \item \texttt{live.html} $\rightarrow$ \texttt{live.css}
+        \item \texttt{scorecard.html} $\rightarrow$ \texttt{scorecard.css}
+        \item \texttt{summary.html} $\rightarrow$ \texttt{summary.css}
+    \end{itemize}
+
+    \item \textbf{Modern Layouts using Flex and Grid}:
+    \begin{itemize}
+        \item Used \texttt{display: flex} and \texttt{justify-content/align-items} extensively to arrange forms and sections.
+        \item Centered containers ensure alignment across screen sizes.
+        \item Match dashboard uses flexible wrappers to dynamically organize buttons and stats.
+    \end{itemize}
+
+    \item \textbf{Consistent Theme and Palette}:
+    \begin{itemize}
+        \item A clean sky blue background paired with blue and black fonts for readability.
+        \item Section headers are styled to stand out using increased font weight and padding.
+        \item Button color transitions and box shadows enhance interactivity.
+    \end{itemize}
+
+    \item \textbf{Button Design}:
+    \begin{itemize}
+        \item Run buttons (0–6, extras, wicket) styled with margins, border-radius, and hover feedback.
+        \item Hovering changes color and opacity to guide user input.
+        \item Disabled buttons appear faded with \texttt{cursor: not-allowed}.
+    \end{itemize}
+
+    \item \textbf{Forms and Placeholders}:
+    \begin{itemize}
+        \item Input fields (e.g., batter/bowler entry) use placeholders with spacing and outlines.
+        \item Forms are padded, centered, and respond gracefully to page resizing.
+    \end{itemize}
+
+    \item \textbf{Tables for Stats Display}:
+    \begin{itemize}
+        \item Alternate row colors applied using \texttt{nth-child(even)} selector for readability.
+        \item Headers are bold and uppercased; columns are auto-sized for responsiveness.
+        \item Tables update dynamically using DOM manipulation.
+    \end{itemize}
+
+    \item \textbf{Navigation and Responsiveness}:
+    \begin{itemize}
+        \item A minimalist horizontal navigation bar appears on all major pages.
+        \item Links styled for color change on hover to indicate interactivity.
+        \item Layouts remain functional on varying screen widths.
+    \end{itemize}
+
+    \item \textbf{Commentary Box Styling}:
+    \begin{itemize}
+        \item Commentary entries rendered in a scrollable box with custom font and spacing.
+        \item Past 5 commentary lines maintained using dynamic rendering logic.
+        \item Uses subtle background shading to distinguish this section.
+    \end{itemize}
+    \item\textbf{Custom Tab Icon:}
+    \begin{itemize}
+        \item A custom favicon (tab logo) was added to enhance the application's branding and professionalism. This small cricket-themed icon appears on the browser tab for all pages, making the web app visually identifiable and polished.
+    \end{itemize}
+
+\end{itemize}
+
+Each CSS file was purpose-built to align visually with the core logic of the corresponding page, enhancing the intuitive experience for users. The uniformity of structure, clarity of button layouts, and table formatting are key contributors to the usability of \textbf{Howzatt!}.
+
+
+\section{Advanced Features Implemented}
+\begin{itemize}
+    \item \textbf{Ball-by-ball Commentary:} Each ball event triggers a dynamic commentary line selected randomly from pre-defined arrays such as dotBallCommentary, oneRunCommentary, fourRunCommentary, bowledCommentary, etc.
+    \item \textbf{Rolling Commentary Feed:} The latest five commentary entries are displayed in a live-updating feed, enhancing the realism and immersion.
+    \item \textbf{Extras Handling:} Fully supports logic for wide balls and no-balls, including automatic extra run addition and free-hit handling on no-balls.
+    \item \textbf{Audio Commentary Integration:}
+To enhance the realism of the live scoring experience, an optional audio commentary feature was added. Pre-recorded commentary lines (generated using text-to-speech synthesis in Python) were saved as individual MP3 files. When enabled, each scoring event (dot ball, runs, boundary, wicket, etc.) plays a corresponding commentary audio clip dynamically through JavaScript. A toggle button was added to the live scoring interface to allow users to start or  stop audio commentary during the match. The audio system is fully browser-   based and works offline once the audio files are available locally.
+
+\item \textbf{Theme Toggle Functionality:} A color theme toggle button was added to the live scoring interface, allowing users to switch between a blue and green theme dynamically. This was implemented using CSS variables and JavaScript to modify the root class on-the-fly. While the color override is not yet fully comprehensive across all elements, the feature demonstrates flexibility in UI customization and lays the groundwork for a fully theme-responsive design in future versions.
+(I got the idea for this on the last day, hence it has not been implemented properly.)
+    \item \textbf{Free Hit Logic:} If a ball is declared a no-ball, wickets cannot be taken on the immediate next delivery (free hit enforcement).
+    \item \textbf{Maiden Over Detection:} Overs without runs from the bat are flagged as maiden overs at their end, and the bowler's stat is updated accordingly.
+    \item \textbf{Prevent Double Triggers:} Catch dismissal and bowled confirmation buttons use one-time event listeners (e.g., \texttt{\{ once: true \}}) to avoid unintended logic stacking.
+    \item \textbf{Interactive Player Setup:} New batter and new bowler forms appear contextually at wickets or over changes, ensuring input validation and smooth gameplay.
+\end{itemize}
+
+\section{Session Storage Design}
+\subsection{Persistent Match Data}
+To maintain game state across multiple pages, sessionStorage is leveraged to retain:
+\begin{itemize}
+    \item Names of current striker, non-striker, and bowler.
+    \item Score counters: runs, wickets, overs, extras for both innings.
+    \item Arrays of player statistics (runs, balls, fours, sixes, etc.).
+    \item Player initialization flags and commentary indexes.
+    \item Lists of all batters/bowlers used per innings.
+    \item Commentary history array to populate the rolling display.
+\end{itemize}
+
+\subsection{How was the Data Stored}
+There are 4 arrays created in the JavaScript while initialising the match:
+\begin{itemize}
+    \item Players of batting first for batting
+    \item Players of bowling first for bowling
+    \item Players of batting first for bowling
+    \item Players of bowling first for batting
+    
+\end{itemize}
+Players are added to the array according to need, and they are initialised by the initialisePlayer function, which basically makes an array for all individual players. The size of the array of each player is 11 elements, and it represents runs, balls, fours, sixes, strike rate, overs, maidens, runs, wickets, economy, and how out for each player, and these stats are dynamically updated as the match goes on. By this method, it's really easy to write the script for showing scorecard.
+\subsection{Handling Page Navigation}
+As the application spans across setup, live scoring, scorecard, and summary pages, sessionStorage ensures a persistent game state without server reliance. For instance:
+\begin{itemize}
+    \item Live page resumes where it left off without data loss.
+    \item Scorecard page renders statistics live from session data.
+    \item Summary page computes winner based on session-based totals.
+\end{itemize}
+
+\section{Challenges Faced}
+\begin{itemize}
+    \item \textbf{Overs and Ball Tracking:} Representing overs as x.y and converting accurately to balls and vice versa was essential to ensure logical consistency.
+    \item \textbf{Bowler/Batter Switching:} Correctly rotating strike and tracking bowler changes after full overs without missing edge cases.
+    \item \textbf{Simultaneous Input Race Conditions:} Preventing bugs from rapid user actions (e.g., wicket + no-ball conflict) using event lockouts and booleans.
+    \item \textbf{Dynamic DOM Rendering:} Ensuring correct table updates and data overwrites, especially when new players entered the match.
+    \item \textbf{Single-use Event Handlers:} Avoiding double submission of new batter/bowler entries via once-true flags and visibility toggles.
+\end{itemize}
+
+
+
+\section{How score.js Powers the Application}
+\texttt{score.js} is the main JavaScript logic file that drives the core interactivity and state management across all pages. Its key responsibilities include:
+\begin{itemize}
+    \item \textbf{Setup Initialization:} Handles input validation, toss logic, innings configuration, and commentary array generation on the \texttt{setup.html} page.
+    \item \textbf{Scoring Engine:} Updates batter and bowler stats for every ball, registers wickets, rotates strike, and manages innings transitions.
+    \item \textbf{Match Progress Tracking:} Detects end of innings, enforces match result logic, and calls transition routines.
+    \item \textbf{DOM Manipulation:} Dynamically updates score display, commentary feed, tables for batters and bowlers.
+    \item \textbf{Session Persistence:} Reads from and writes to sessionStorage at every logical point to keep state synchronized.
+    \item \textbf{Special Inputs:} Manages the forms for new batter and new bowler with context-based visibility and validation.
+    \item \textbf{Commentary Handling:} Ensures varied commentary lines per event using cycling index and randomization.
+\end{itemize}
+
+\section{Learnings}
+\begin{itemize}
+    \item Deep understanding of event-driven programming with JavaScript.
+    \item Creative use of sessionStorage for frontend-only state persistence.
+    \item DOM traversal and manipulation for dynamic table rendering.
+    \item Importance of UX flow and managing visibility of interactive elements.
+    \item Debugging asynchronous issues with DOM updates and event stacking.
+\end{itemize}
+
+\section{Conclusion}
+The \textbf{Howzatt!} cricket scoring web application is a full-fledged frontend system capable of managing a complete cricket match digitally. It not only replicates traditional scorekeeping but enhances it with real-time commentary, accurate player metrics, and a clean user interface. The modularity and stateless server architecture make it highly portable and extendable. 
+
+Potential future directions include adding persistent storage (using localStorage or backend), support for multi-device sync, or downloadable match reports.
+
+\section*{References}
+\begin{itemize}
+    \item \url{https://openai.com/index/chatgpt/}
+    \item \url{https://freecodecamp.org/news/web-storage-localstorage-vs-sessionstorage-in-javascript}
+    \item \url{https://www.w3schools.com/}
+\end{itemize}
+
+
+
+\end{document}
+

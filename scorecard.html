@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Match Scorecard - Howzatt!</title>
+  <link rel="icon" type="image/png" href="figures/logo.png">
+  <link rel="stylesheet" href="scorecard.css">
+</head>
+<body class="blue-theme">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="scorecard.html" class="active">Scorecard</a></li>
+      <li><a href="summary.html">Summary</a></li>
+    </ul>
+  </nav>
+  <button id="themeToggleButton">Change Color Theme</button> <br>
+
+  <!-- Page Heading -->
+  <h1 class="center">Match Scorecard</h1>
+
+  <!-- Innings 1 -->
+  <section id="innings1">
+    <h2>Innings 1</h2>
+    <br>
+    <h2 id="team1Name"></h2>
+
+
+    <h3>Batting</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>How Out</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>SR</th>
+        </tr>
+      </thead>
+      <tbody id="team1Batting"></tbody>
+    </table>
+
+    <h3>Bowling</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>Overs</th><th>Maidens</th><th>Runs</th><th>Wickets</th><th>Economy</th>
+        </tr>
+      </thead>
+      <tbody id="team2Bowling"></tbody>
+    </table>
+  </section>
+
+  <!-- Innings 2 -->
+  <section id="innings2">
+    <h2>Innings 2</h2>
+    <br>
+    <h2 id="team2Name"></h2>
+
+    <h3>Batting</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>How Out</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>SR</th>
+        </tr>
+      </thead>
+      <tbody id="team2Batting"></tbody>
+    </table>
+
+    <h3>Bowling</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th><th>Overs</th><th>Maidens</th><th>Runs</th><th>Wickets</th><th>Economy</th>
+        </tr>
+      </thead>
+      <tbody id="team1Bowling"></tbody>
+    </table>
+  </section>
+
+  <script src="score.js"></script>
+</body>
+</html>

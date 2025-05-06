@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Live Match - Howzatt!</title>
+  <link rel="icon" type="image/png" href="figures/logo.png">
+  <link rel="stylesheet" href="live.css" />
+</head>
+<body class="blue-theme">
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="scorecard.html">Scorecard</a></li>
+      <li><a href="summary.html">Summary</a></li>
+    </ul>
+  </nav>
+
+  <!-- Initial Input Form (Strike Batter, Non-Strike Batter, Bowler) -->
+  <div class="input-form-container" id="initialForm">
+    <h2>Enter Player Names</h2>
+    <label for="strikeBatter">Strike Batter:</label>
+    <input type="text" id="strikeBatter" placeholder="Enter Strike Batter's Name" />
+    <br/>
+    <label for="nonStrikeBatter">Non-Strike Batter:</label>
+    <input type="text" id="nonStrikeBatter" placeholder="Enter Non Strike Batter's Name" />
+    <br/>
+    <label for="bowler">Bowler:</label>
+    <input type="text" id="bowler" placeholder="Enter Bowler's Name" />
+    <br/>
+    <button id="setPlayers">Set Players</button>
+  </div>
+
+  <!--Change Batter/Bowler Form (Appears when needed) -->
+  <div class="input-form-container" id="changeFormForBatter" style="display:none">
+    <h2>Change Player</h2>
+    <label for="newBatter">New Batter:</label>
+    <input type="text" id="newBatter" placeholder="Enter New Batter's Name" />
+    <br/>
+    
+    <button id="changeBatter">Change Batter</button>
+  </div>
+
+  <div class="input-form-container" id="changeFormForBowler" style="display:none">
+    <h2>Change Player</h2>
+    
+    <label for="newBowler">New Bowler:</label>
+    <input type="text" id="newBowler" placeholder="Enter New Bowler's Name" />
+    <br/>
+    <button id="changeBowler">Change Bowler</button>
+  </div>
+  <!-- Modal for messages -->
+  <div id="messageBox" style="display: none;" class="message-box">
+    <h2 id="messageText"></h2>
+    <button id="continueButton">Continue</button>
+  </div>
+  <!-- Wicket Type Selection Form -->
+  <div id="wicketTypeForm" class="wicket-form">
+    <p>Select how the batter got out:</p>
+
+    <div class="wicket-buttons">
+      <button id="bowledButton">Bowled</button>
+      <button id="caughtButton">Caught</button>
+      <button id="lbwButton">LBW</button>
+    </div>
+
+    <div id="catchDetails" style="display: none; margin-top: 15px;">
+      <input type="text" id="fielderName" placeholder="Enter Fielder's Name">
+      <button id="confirmCatch">Confirm Catch</button>
+    </div>
+  </div>
+  
+
+
+  <div class="live-container" id="mainLiveForm" style="display: none">
+    <button id="toggleAudioCommentary" class="audio-toggle">🔊 Audio: ON</button>
+    <button id="themeToggleButton">Change Color Theme</button>
+
+    <h1 id="scoreDisplay">Loading...</h1>
+    <h3 id="commentary"></h3>
+    <p id="currentRunRate"></p>
+    <p id="requiredRunRate"></p>
+
+    <h2>Batters</h2>
+    <table class="batter-table">
+      <thead>
+        <tr>
+          <th>Batter</th>
+          <th>Runs</th>
+          <th>Balls</th>
+          <th>4s</th>
+          <th>6s</th>
+          <th>SR</th>
+        </tr>
+      </thead>
+      <tbody id="batterStats"></tbody>
+    </table>
+
+    <h2>Bowler</h2>
+    <table class="bowler-table">
+      <thead>
+        <tr>
+          <th>Bowler</th>
+          <th>Overs</th>
+          <th>Maidens</th>
+          <th>Runs</th>
+          <th>Wickets</th>
+          <th>Eco</th>
+        </tr>
+      </thead>
+      <tbody id="bowlerStats"></tbody>
+    </table>
+
+    <div class="scoring-buttons">
+      <button id="run0">0</button>
+      <button id="run1">1</button>
+      <button id="run2">2</button>
+      <button id="run3">3</button>
+      <button id="run4">4</button>
+      <button id="run6">6</button>
+
+      <br>
+      <button id="registerWicket">Wicket</button>
+      <button id="wide">Wide</button>
+      <button id="noBall">No Ball</button>
+
+      
+    </div>
+    <div id="noBallInputBox" style="display: none; text-align: center; margin-top: 20px;">
+      <label for="noBallRuns">Runs scored off No Ball (excluding the extra 1 run):</label>
+      <select id="noBallRuns" style="margin: 10px; padding: 5px; font-size: 16px;">
+        <option value="" disabled selected>Select runs</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="6">6</option>
+      </select>
+      
+      <button id="submitNoBall">Submit</button>
+    </div>
+    <!-- Commentary Box -->
+    <div class="commentary-container">
+    <h3>Ball-by-Ball Commentary</h3>
+    <div id="commentaryBox" class="commentary-box">
+    <!-- Ball-by-ball commentary will be appended here -->
+    </div>
+</div>
+
+  </div>
+
+  <script src="score.js"></script>
+</body>
+</html>
